@@ -1,6 +1,6 @@
 
-const initialState ={
-    name:'',
+export const initialStateUser ={
+    name:'henrique',
     password: '',
     image:null 
 }
