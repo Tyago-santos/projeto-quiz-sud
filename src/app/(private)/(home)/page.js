@@ -1,5 +1,9 @@
 import Head from "next/head";
+
+
+// impprt de componets
 import TesteTailwind from "@/components/TesteTaiwnd";
+import Header from "@/components/Header";
 
 export default function Home() {
   return (
@@ -12,6 +16,9 @@ export default function Home() {
       </Head>
       <div
       >
+
+        <Header/>
+
         <main className="px-4 mt-8">            
           <TesteTailwind/>
 
