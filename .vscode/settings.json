@@ -1,0 +1,12 @@
+{
+  // 1. Garante que a formatação ao salvar esteja ativa
+  "editor.formatOnSave": true,
+  
+  // 2. Define o Prettier como o formatador padrão para todos os arquivos
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // 3. (Opcional) Ignora a formatação para arquivos específicos
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features" 
+  }
+}
