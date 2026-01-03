@@ -8,12 +8,13 @@ const Header = () => {
 
     const [state] = useContext(ProviderContext);
     return(
-        <header className='bg-white'>
-                <nav className='max-w-lager mx-auto bg-black text-white'>
+        <header className='bg-white py-4'>
+                <nav className=' flex items-center  justify-between max-w-6xl mx-auto '>
                     <Link href="/">
+                        logo
                     </Link>
 
-                    <ul>
+                    <ul className='flex gap-x-2'>
                         <ul>
                             {state.user.name}
                         </ul>
