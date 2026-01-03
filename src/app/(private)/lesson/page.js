@@ -1,7 +1,9 @@
-export default function Login (){
+
+export default function LessonPage (){
+
+    console.log(params)
     return(
         <section>
-
         </section>
     )
 } 
