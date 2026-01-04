@@ -1,6 +1,10 @@
+.page{
+    border-top: 2px solid rebeccapurple;
+}
+
 .container{
-    margin: 0 auto;
-    max-width: 1100px;
+    margin: 20px auto;
+    max-width: 980px;
 }
 
 
@@ -11,6 +15,87 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin:1rem 0px;
+}
+
+/* .progress{
+    text-align: center;
+    width: 200px;
+    padding: 0px 12px;
+    border: 2px solid rebeccapurple;
+    box-shadow: -1px 2px 3px     rebeccapurple;
+    border-radius: 999px;
+    position: relative;
+    z-index: 999;
+    color:black;
+    transition: all .4s;
+
+} */
+
+
+/* progress.module.css */
+
+.progress_bar {
+  appearance: none; /* Remove o estilo padrão do SO */
+  -webkit-appearance: none;
+  width: 100%;
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden; /* Garante que a barra interna respeite o border-radius */
+  border: 1px solid #ddd;
+}
+
+/* 1. Fundo da barra (Chrome, Safari, Edge) */
+.progress_bar::-webkit-progress-bar {
+  background-color: #eee;
+}
+
+/* 2. Parte preenchida (Chrome, Safari, Edge) */
+.progress_bar::-webkit-progress-value {
+  background-color: #0070f3; /* Azul do Next.js */
+  transition: width 0.3s ease; /* Animação suave */
+}
+
+/* 3. Fundo da barra (Firefox) */
+.progress_bar {
+  background-color: #eee;
+}
+
+/* 4. Parte preenchida (Firefox) */
+.progress_bar::-moz-progress-bar {
+  background-color: #0070f3;
+}
+
+/* .progress_bar{
+
+    text-align: center;
+    width: 200px;
+    border: 2px solid rebeccapurple;
+    box-shadow: -1px 2px 3px     rebeccapurple;
+    border-radius: 999px;
+    position: relative;
+    z-index: 999;
+    color:black;
+    transition: all .4s;
+    
+
+} */
+/* 
+.progress::before{
+    content: ' ';
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+    transition: all .4s;
+
+    border-radius: 999px;
+
+} */
+
+.category{
+    font-weight:bolder;
 }
 
 .text_question{
@@ -19,4 +104,99 @@
     text-wrap:wrap;
     line-height: 1.5;
     max-width: 1000px;
+}
+
+.quiz li{
+    margin: 20px 0px  ;
+    padding: 1rem;
+    border: 2px solid rebeccapurple;   
+    border-radius:50px ;
+    display: flex;
+    align-items: center;
+    gap:1rem;
+    font-weight: bolder;
+    cursor: pointer;
+
+}
+
+.quiz li:hover{
+    background-color: rebeccapurple;
+}
+
+.letter{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border: 2px solid rebeccapurple;
+    border-radius:100%;
+}
+
+
+.quiz_response{
+    margin: 10px 0px ;
+}
+
+.quiz_response ul{
+    
+    display: grid;
+    
+    grid-template-columns: 1fr 1fr ;
+
+}
+
+.quiz_response ul li{
+    background-color: blue;
+    margin: 8px;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: wheat;
+}
+
+.container_button{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+}
+
+.button_quit{
+    width:100%;
+    display: block;
+    background-color: green;
+    color: white;
+    padding: 1rem;
+    font-weight: bolder;
+    border-radius:.75rem;
+    cursor: pointer;
+    border: 2px solid transparent;
+
+}
+
+.button_quit:hover{
+    background-color: white;
+    color: green;
+    border: 2px solid green;
+    
+    transition: all .4s;
+}
+.button_next{
+    width:100%;
+    display: block;
+    background-color: black;
+    color: white;
+    padding: 1rem;
+    font-weight: bolder;
+    border-radius:.75rem;
+    cursor: pointer;
+    border: 2px solid transparent;
+
+}
+
+.button_next:hover{
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    
 }
