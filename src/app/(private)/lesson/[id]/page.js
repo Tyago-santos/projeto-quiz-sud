@@ -1,70 +1,116 @@
-import styles from '@/styles/Lesson.module.css';
+'use client'
 
-import Header from '@/components/Header';
+import { useState } from "react";
+import Header from "@/components/Header";
 
- const calcResponse = (20/10)*100
+const calcResponse = (15/20)*100;
 
-export default async function LessonIdPage ({params}){
+export default function  LessonIdPage() {
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
 
-    const {id} = await params
-    return(
-        <>
-        <Header/>
-        <section className={styles.page} >
-            <div className={styles.container}>
-                <div className={styles.container_header}>
-                    <div className={styles.question_header}>
-                        <div  className={styles.progress}>
-                            <progress value="10" max="100" className={styles.progress_bar}/>
-                            <span></span>
-                        </div>
-                        <span className={styles.category}>Livro de Mormon</span>
-                    </div>
-                    <p className={styles.text_question}>Qual foi o primeiro profeta do livro de mormon Qual foi o primeiro profeta do livro de mormon Qual foi o primeiro profeta do livro de mormon</p>
-                </div>
-                    <div className={styles.quiz}>
-                        <ul>
-                            <li >
-                                <span className={styles.letter}>A</span>
-                                <span className={styles.options}>Lei</span>
-                            </li>
-                            <li>
-                                <span className={styles.letter}>B</span>
-                                <span className={styles.options}>Jaco</span>
-                            </li>
-                            <li>
-                                <span className={styles.letter}>C</span>
-                                <span className={styles.options}>Joseph</span>
-                            </li>
-                            <li>
-                                <span className={styles.letter}>D</span>
-                                <span className={styles.options}>Adão</span>
-                            </li>
-                        </ul>
-                </div>
-                <div className={styles.quiz_response}>
-                        <ul>
-                            <li >
-                                <span className={styles.letter_response}>A</span>
-                            </li>
-                            <li>
-                                <span className={styles.letter_response}>B</span>
-                            </li>
-                            <li>
-                                <span className={styles.letter_response}>C</span>
-                            </li>
-                            <li>
-                                <span className={styles.letter_response}>D</span>
-                            </li>
-                        </ul>
-                </div>
-                <div className={styles.container_button}>
-                    <button className={styles.button_quit}>Desistir</button>                
-                    <button className={styles.button_next}>Próximo</button>                
-                </div>
+  const handleAnswerClick = (answer) => {
+    setSelectedAnswer(answer)
+    alert(answer);
+  };
+
+  return (
+    <div className="flex flex-col h-screen bg-background text-text font-sans transition-colors duration-300">
+      <Header />
+      
+      <section className="flex-1 flex items-center justify-center p-4">
+        <div className="w-full max-w-2xl bg-white border-2 border-secondary/50 rounded-3xl shadow-xl flex flex-col max-h-[85vh] overflow-hidden">
+          
+          {/* Cabeçalho do Card */}
+          <div className="bg-secondary/50 p-5 shrink-0">
+            <div className="space-y-3">
+              {/* Barra de Progresso */}
+              <div className="w-full bg-slate-200 rounded-full h-2.5">
+                <div 
+                  className="bg-accent h-2.5 rounded-full transition-all duration-500"
+                  style={{ width: `${calcResponse}%` }}
+                ></div>
+              </div>
+              
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium text-text/70">
+                  Pergunta 1 de 10
+                </span>
+                <span className="px-3 py-1 bg-primary/ text-secodary font-semibold rounded-full text-sm">
+                  Livro de Mórmon
+                </span>
+              </div>
             </div>
-        </section>
-        </>
-        
-    )
-} 
+          </div>
+          
+          {/* Corpo do Card */}
+          <div className="p-6 overflow-y-auto custom-scrollbar">
+            <h2 className="text-xl font-bold text-text mb-6 leading-relaxed">
+              Qual foi o primeiro profeta do livro de mormon? Qual foi o primeiro profeta do livro de mormon? Qual foi o primeiro profeta do livro de mormon?
+            </h2>
+            
+            {/* Opções de Resposta */}
+            <div className="space-y-3">
+              {['Lei', 'Jaco', 'Joseph', 'Adão'].map((option, index) => {
+                const letter = String.fromCharCode(65 + index); // A, B, C, D
+                const isSelected = selectedAnswer === letter;
+                
+                return (
+                  <div
+                    key={letter}
+                    onClick={() => handleAnswerClick(letter)}
+                    className={`
+                      flex items-center p-4 rounded-xl cursor-pointer border-2 transition-all duration-200
+                      ${isSelected 
+                        ? 'border-accent bg-accent/5 shadow-sm' 
+                        : 'border-slate-100 hover:border-secondary/50 hover:bg-slate-50'}
+                    `}
+                  >
+                    <div className={`
+                      w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg mr-4 shrink-0
+                      ${isSelected 
+                        ? 'bg-accent text-white' 
+                        : 'bg-slate-100 text-text/70'}
+                    `}>
+                      {letter}
+                    </div>
+                    <span className={`font-medium text-base ${isSelected ? 'text-accent' : 'text-text/80'}`}>
+                      {option}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          
+          {/* Rodapé do Card */}
+          <div className="p-5 pt-3 bg-slate-50 border-t border-slate-100 shrink-0">
+            <div className="flex gap-3">
+              <button 
+                className="
+                  flex-1 py-3.5 rounded-xl font-bold text-lg shadow-lg 
+                  bg-slate-200 text-text/60 hover:bg-slate-300 
+                  transition-all duration-300 transform hover:scale-[1.02] active:scale-95
+                "
+              >
+                Desistir
+              </button>
+              
+              <button 
+                disabled={!selectedAnswer}
+                className={`
+                  flex-1 py-3.5 rounded-xl font-bold text-lg shadow-lg transition-all duration-300 transform
+                  ${selectedAnswer 
+                    ? 'bg-primary text-text hover:brightness-105 active:scale-95 hover:shadow-primary/40' 
+                    : 'bg-slate-200 text-slate-400 cursor-not-allowed'}
+                `}
+              >
+                Próximo
+              </button>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+    </div>
+  );
+}
