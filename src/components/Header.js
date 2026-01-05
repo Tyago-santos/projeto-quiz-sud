@@ -9,7 +9,7 @@ const Header = () => {
     const [state] = useContext(ProviderContext);
     return(
         <header className='bg-white py-4'>
-                <nav className=' flex items-center  justify-between max-w-6xl mx-auto '>
+                <nav className=' flex items-center justify-between max-w-6xl mx-auto '>
                     <Link href="/">
                         logo
                     </Link>

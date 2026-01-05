@@ -1,9 +1,13 @@
-// app/layout.js
 'use client'
-import { Inter } from 'next/font/google'
+import { Fredoka } from 'next/font/google'
 import '@/styles/globals.css'
-const inter = Inter({ subsets: ['latin'] });
 
+const fredoka = Fredoka({ 
+  weight: ['300', '400', '500', '600', '700'], 
+  subsets: ['latin'],
+  variable: '--font-fredoka',
+  display: 'swap',
+});
 
 import { createContext, useContext, useReducer } from 'react';
 
@@ -19,8 +23,8 @@ export default function RootLayout({ children }) {
 
   return (
     <ProviderContext.Provider value={[state, dispatch]}>
-    <html lang="pt-BR" className={inter.className}>
-      <body>
+    <html lang="pt-BR" className={`${fredoka.variable}`}>
+      <body suppressHydrationWarning>
         {children}
       </body>
     </html>

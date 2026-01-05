@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+@theme {
+  --color-text: #00280d;
+  --color-background: #f7fff9;
+  --color-primary: #17fe53;
+  --color-secondary: #6db2fe;
+  --color-accent: #4755fe;
+
+  /* Define Fredoka como a fonte padrão (sans) do Tailwind */
+  --font-sans: var(--font-fredoka);
+}
+
+body {
+  color: var(--color-text);
+  background: var(--color-background);
+  font-family: var(--font-fredoka);
+}
