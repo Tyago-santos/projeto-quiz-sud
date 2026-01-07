@@ -1,6 +1,13 @@
 'use client'
+// importação de hooks nativos do next ks
 import { useState } from "react";
+import { useContext } from "react";
+
+// importaçõe externas do next js 
 import Header from "@/components/Header";
+import {ProviderContext} from '@/app/layout';
+
+
 
 const CATEGORIES = [
   'Livro de Mórmon', 
@@ -12,14 +19,27 @@ const CATEGORIES = [
 ];
 
 export default function Home() {
+  const [state, dispatch] = useContext(ProviderContext);
+
   const [selecionados, setSelecionados] = useState([]);
 
   const handleCheckbox = (category) => {
-    if (selecionados.includes(category)) {
-      setSelecionados(selecionados.filter((item) => item !== category));
+    if (state.questions.categorySelect.includes(category)) {
+      dispatch({
+        type: 'REMOVE_QUESTION',
+        payload:category
+      });
+
+      
     } else {
-      setSelecionados([...selecionados, category]);
+        dispatch({
+        type: 'ADD_QUESTION',
+        payload: category
+      });
     }
+
+
+
   };
 
   return (
@@ -34,14 +54,14 @@ export default function Home() {
           
           <div className="bg-secondary/50 p-5 shrink-0">
             <h3 className="text-2xl font-bold text-center text-text">
-              Escolha as Categorias
+              Escolha as Categorias 
             </h3>
           </div>
           
           <div className="p-5 overflow-y-auto custom-scrollbar">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {CATEGORIES.map((category) => {
-                const isSelected = selecionados.includes(category);
+                const isSelected = state.questions.categorySelect.includes(category);
                 return (
                   <div 
                     key={category}
