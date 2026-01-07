@@ -1,12 +1,11 @@
 
-import { userReducer } from "./userRedeucer";
-import { initialStateUser } from "./userRedeucer";
-import { initialStateQuestio } from "./questionsReducer";
+import { initialStateUser, userReducer } from "./userRedeucer";
+import { initialStateQuestion, questionReducer} from "./questionsReducer";
 
 
 const initialStateReducers = {
     user:initialStateUser,
-    questions: initialStateQuestio
+    questions: initialStateQuestion
 
 }
 const combineReducers = (reducers) =>{
@@ -23,7 +22,7 @@ const combineReducers = (reducers) =>{
 
 const rootReducers = combineReducers({
     user: userReducer, // userReducer,
-    questons: [],//userQuestion   
+    questions:questionReducer,//userQuestion   
 })
 
 export {rootReducers, initialStateReducers}

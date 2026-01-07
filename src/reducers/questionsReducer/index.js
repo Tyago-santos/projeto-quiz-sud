@@ -1,13 +1,17 @@
 
-export const initialStateQuestio ={
-    questions:[]
+export const initialStateQuestion ={
+    categorySelect:[]
 }
 
 
-export const questionReducer = (state, action) => {
+export const questionReducer = (state = initialStateQuestion, action) => {
     switch (action.type) {
         case 'ADD_QUESTION':
-            return {...state, questions: [...state.questions, action.payload]}
+            return {...state, categorySelect: [...state.categorySelect, action.payload]}
+    
+        case 'REMOVE_QUESTION':
+            const newState =  state.categorySelect.filter(item => item  !== action.payload )
+            return {...state, categorySelect: [...newState]}
     
         default:
             return state;
