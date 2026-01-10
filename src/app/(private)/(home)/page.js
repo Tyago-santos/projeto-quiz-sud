@@ -1,7 +1,7 @@
 'use client'
 // importação de hooks nativos do next ks
-import { useState } from "react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { useRouter } from 'next/navigation'
 
 // importaçõe externas do next js 
 import Header from "@/components/Header";
@@ -20,20 +20,42 @@ const CATEGORIES = [
 
 export default function Home() {
   const [state, dispatch] = useContext(ProviderContext);
-
+  const router = useRouter();
   const [selecionados, setSelecionados] = useState([]);
+
+
+  async function handleGenarateQuestion(){
+    const response = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        // MANDANDO O DADO DO FORMULÁRIO AQUI:
+        body: JSON.stringify({ lib: state.questions.categorySelect  })
+  })
+      const data = await response.json();
+
+      dispatch({
+        type: 'ADD_LESSON',
+        payload:data
+      });
+
+      router.push('/lesson/10');
+
+      console.log(state.questions.lesson);
+
+    
+  }
 
   const handleCheckbox = (category) => {
     if (state.questions.categorySelect.includes(category)) {
       dispatch({
-        type: 'REMOVE_QUESTION',
+        type: 'REMOVE_QUESTION_SELECT',
         payload:category
       });
 
       
     } else {
         dispatch({
-        type: 'ADD_QUESTION',
+        type: 'ADD_QUESTION_SELECT',
         payload: category
       });
     }
@@ -94,16 +116,17 @@ export default function Home() {
           </div>
 
           <div className="p-5 pt-3 bg-slate-50 border-t border-slate-100 shrink-0">
-            <button 
-              disabled={selecionados.length === 0}
+            <button
+              onClick={handleGenarateQuestion}
+              disabled={state.questions.categorySelect.length === 0}
               className={`
                 w-full py-3.5 rounded-xl font-bold text-lg shadow-lg transition-all duration-300 transform
-                ${selecionados.length > 0 
+                ${state.questions.categorySelect.length > 0 
                   ? 'bg-primary text-text hover:brightness-105 active:scale-95 hover:shadow-primary/40' 
                   : 'bg-slate-200 text-slate-400 cursor-not-allowed'}
               `}
             >
-              {selecionados.length > 0 ? 'INICIAR QUIZ' : 'Selecione uma categoria'}
+              {state.questions.categorySelect.length > 0 ? 'INICIAR QUIZ' : 'Selecione uma categoria'}
             </button>
           </div>
 
