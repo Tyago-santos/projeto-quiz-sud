@@ -1,17 +1,42 @@
 'use client'
 
-import { useState } from "react";
+import { useState, useContext} from "react";
+import { useRouter } from "next/navigation";
+import { ProviderContext } from "@/app/layout";
+
 import Header from "@/components/Header";
 
-const calcResponse = (15/20)*100;
+
+
 
 export default function  LessonIdPage() {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const[findIndex, setFindIndex] = useState(1)
 
-  const handleAnswerClick = (answer) => {
+  const router = useRouter();
+  const [ state]  = useContext(ProviderContext);
+
+  const handleAnswerClick = (answer, options) => {
     setSelectedAnswer(answer)
-    alert(answer);
+    if(options.isCorrect){
+      alert('acertou');
+    }
   };
+
+const calcResponse = (findIndex/state.questions.lesson.length)*100;
+  
+  
+  const handleCheckResponse  = () => {
+    setFindIndex(prev => prev + 1 );
+  }
+
+  const handleQuitResponse = ()=> {
+    const ok = confirm("Deseja realmente desistir")
+    if (ok){
+      router.push('/');
+    }
+
+  }
 
   return (
     <div className="flex flex-col h-screen bg-background text-text font-sans transition-colors duration-300">
@@ -33,10 +58,10 @@ export default function  LessonIdPage() {
               
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium text-text/70">
-                  Pergunta 1 de 10
+                  {findIndex} de {state.questions.lesson.length}
                 </span>
                 <span className="px-3 py-1 bg-primary/ text-secodary font-semibold rounded-full text-sm">
-                  Livro de Mórmon
+                  {state.questions.lesson[findIndex].tema}
                 </span>
               </div>
             </div>
@@ -45,19 +70,19 @@ export default function  LessonIdPage() {
           {/* Corpo do Card */}
           <div className="p-6 overflow-y-auto custom-scrollbar">
             <h2 className="text-xl font-bold text-text mb-6 leading-relaxed">
-              Qual foi o primeiro profeta do livro de mormon? Qual foi o primeiro profeta do livro de mormon? Qual foi o primeiro profeta do livro de mormon?
+                {state.questions.lesson[findIndex].question}
             </h2>
             
             {/* Opções de Resposta */}
-            <div className="space-y-3">
-              {['Lei', 'Jaco', 'Joseph', 'Adão'].map((option, index) => {
+            <div className="space-y-3  ">
+              {state.questions.lesson[findIndex].response.map((item, index) => {
                 const letter = String.fromCharCode(65 + index); // A, B, C, D
                 const isSelected = selectedAnswer === letter;
                 
                 return (
                   <div
                     key={letter}
-                    onClick={() => handleAnswerClick(letter)}
+                    onClick={() => handleAnswerClick(letter, item)}
                     className={`
                       flex items-center p-4 rounded-xl cursor-pointer border-2 transition-all duration-200
                       ${isSelected 
@@ -74,7 +99,7 @@ export default function  LessonIdPage() {
                       {letter}
                     </div>
                     <span className={`font-medium text-base ${isSelected ? 'text-accent' : 'text-text/80'}`}>
-                      {option}
+                      {item.options}
                     </span>
                   </div>
                 );
@@ -86,6 +111,7 @@ export default function  LessonIdPage() {
           <div className="p-5 pt-3 bg-slate-50 border-t border-slate-100 shrink-0">
             <div className="flex gap-3">
               <button 
+                onClick={handleQuitResponse}
                 className="
                   flex-1 py-3.5 rounded-xl font-bold text-lg shadow-lg 
                   bg-slate-200 text-text/60 hover:bg-slate-300 
@@ -96,6 +122,7 @@ export default function  LessonIdPage() {
               </button>
               
               <button 
+                onClick={handleCheckResponse}
                 disabled={!selectedAnswer}
                 className={`
                   flex-1 py-3.5 rounded-xl font-bold text-lg shadow-lg transition-all duration-300 transform
