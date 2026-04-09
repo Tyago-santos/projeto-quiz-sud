@@ -1,34 +1,34 @@
-'use client'
-import { Fredoka } from 'next/font/google'
-import '@/styles/globals.css'
+"use client";
+import { Fredoka } from "next/font/google";
+import "@/styles/globals.css";
+import Head from "next/head";
 
-const fredoka = Fredoka({ 
-  weight: ['300', '400', '500', '600', '700'], 
-  subsets: ['latin'],
-  variable: '--font-fredoka',
-  display: 'swap',
+const fredoka = Fredoka({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-fredoka",
+  display: "swap",
 });
 
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer } from "react";
 
-import { rootReducers,initialStateReducers } from '@/reducers';
+import { rootReducers, initialStateReducers } from "@/reducers";
 
 // import {  useRouter} from 'next/navigation'
-export const ProviderContext = createContext(); 
+export const ProviderContext = createContext();
 
 export default function RootLayout({ children }) {
-
   const [state, dispatch] = useReducer(rootReducers, initialStateReducers);
-  
 
   return (
     <ProviderContext.Provider value={[state, dispatch]}>
-    <html lang="pt-BR" className={`${fredoka.variable}`}>
-      <body suppressHydrationWarning>
-        {children}
-      </body>
-    </html>
-
+      <Head>
+        <link rel="icon" href="/logo.png" sizes="any" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+      </Head>
+      <html lang="pt-BR" className={`${fredoka.variable}`}>
+        <body suppressHydrationWarning>{children}</body>
+      </html>
     </ProviderContext.Provider>
-  )
+  );
 }

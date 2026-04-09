@@ -66,6 +66,7 @@ export default function LoginPage() {
             alt="Logo Quiz SUD"
             width={180}
             height={180}
+            className="w-48 h-auto"
             priority
           />
         </div>

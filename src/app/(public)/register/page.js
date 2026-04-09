@@ -63,6 +63,7 @@ export default function RegisterPage() {
             width={180}
             height={180}
             priority
+            className="w-48 h-auto"
           />
         </div>
         <h1 className="text-3xl font-bold text-center mb-2">Criar conta 🚀</h1>
