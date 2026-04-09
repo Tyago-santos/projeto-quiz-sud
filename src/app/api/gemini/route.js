@@ -1,96 +1,110 @@
-import { NextResponse } from 'next/server';
-
-
- 
-
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
+  try {
+    const { lib } = await req.json();
 
-  const schema = {
-  type: "array",
-  items: {
-    type: "object",
-    properties: {
-      id: { type: "integer" },
-      question: { type: "string" },
-      tema: { 
-        type: "object", 
-        items: { 
-          type: "string", 
-          enum: ["velho testamento", "livro de mórmon", "outros", "novo testamento", "perola de grande valor"] 
-        } 
-      },
-      response: {
-        type: "array",
-        items: {
-          type: "array",
-          properties: {
-            options: { type: "string" },
-            isCorrect: { type: "boolean" }
-          },
-          required: ["options", "isCorrect"]
-        }
-      }
-    },
-    required: ["id", "question", "tema", "response"]
-  }
-};
-
-const schemaString = JSON.stringify(schema);
-
- [
-  {
-    id: 1,
-    question: "",
-    tema: "",
-    response: [
-      { options: "", isCorrect: Boolean },
-      { options: "", isCorrect: Boolean },
-      { options: "", isCorrect: Boolean },
-      { options: "", isCorrect: Boolean }
-    ]
-  }]
-
-
-  // 1. Pega o dado que veio do formulário
-  const { lib} = await req.json();
-
-  const apiKey = process.env.GOOGLE_APY_KEY;
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-
-  const requestBody = {
-    contents: [{
-      parts: [{ 
-        // 2. Insere o dado no prompt dinamicamente
-        text:  `Gere 10  perguntas estruturada sobre o tema 
- [
-  {
-    id: 1,
-    question: "",
-    tema: "",
-    response: [
-      { options: "", isCorrect: Boolean },
-      { options: "", isCorrect: Boolean },
-      { options: "", isCorrect: Boolean },
-      { options: "", isCorrect: Boolean }
-    ]
-  }] `+ lib, 
-      }]
-    }],
-    generationConfig: {
-      response_mime_type: "application/json",
-      // response_schema: schemaString
+    if (!lib || (Array.isArray(lib) && lib.length === 0)) {
+      return NextResponse.json(
+        { error: "Nenhuma categoria enviada" },
+        { status: 400 },
+      );
     }
-  };
 
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(requestBody),
-  });
+    const apiKey = process.env.GOOGLE_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json({ error: "API key ausente" }, { status: 500 });
+    }
 
-  const data = await response.json();
-  const aiText = JSON.parse(data.candidates[0].content.parts[0].text);
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
-  return NextResponse.json(aiText);
+    const topics = Array.isArray(lib) ? lib : [lib];
+    const allQuestions = [];
+
+    // pequena função de retry para lidar com 503/429 transitórios
+    const callGemini = async (requestBody, attempt = 1) => {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+      });
+
+      // retry para 429/503 até 3 tentativas com backoff simples
+      if (!response.ok && attempt < 3 && [429, 503].includes(response.status)) {
+        const retryAfter = 1500 * attempt; // 1.5s, 3s
+        await new Promise((res) => setTimeout(res, retryAfter));
+        return callGemini(requestBody, attempt + 1);
+      }
+
+      return response;
+    };
+
+    for (let i = 0; i < topics.length; i++) {
+      const topic = topics[i];
+      const requestBody = {
+        contents: [
+          {
+            parts: [
+              {
+                text: `Gere 10 perguntas estruturadas sobre o tema: ${topic}. Retorne em JSON com este formato:
+[
+  {
+    id: 1,
+    question: "",
+    tema: "${topic}",
+    response: [
+      { options: "", isCorrect: true },
+      { options: "", isCorrect: false },
+      { options: "", isCorrect: false },
+      { options: "", isCorrect: false }
+    ]
+  }
+]`,
+              },
+            ],
+          },
+        ],
+        generationConfig: {
+          response_mime_type: "application/json",
+        },
+      };
+
+      const response = await callGemini(requestBody);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Gemini error", response.status, errorText);
+        return NextResponse.json(
+          { error: "Falha ao chamar Gemini", detail: errorText },
+          { status: response.status },
+        );
+      }
+
+      const data = await response.json();
+      const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!raw) {
+        return NextResponse.json(
+          { error: "Resposta inesperada do Gemini" },
+          { status: 502 },
+        );
+      }
+
+      const questions = JSON.parse(raw);
+
+      const adjustedQuestions = questions.map((q, idx) => ({
+        ...q,
+        id: allQuestions.length + idx + 1,
+      }));
+
+      allQuestions.push(...adjustedQuestions);
+    }
+
+    return NextResponse.json(allQuestions);
+  } catch (err) {
+    console.error("API /api/gemini error", err);
+    return NextResponse.json(
+      { error: "Erro interno", detail: err.message },
+      { status: 500 },
+    );
+  }
 }
