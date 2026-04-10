@@ -12,6 +12,8 @@ import Image from "next/image";
 import { ProviderContext } from "@/app/layout";
 import Cookies from "js-cookie";
 
+import Logo from "../../../../public/logo.png";
+
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -33,7 +35,7 @@ export default function LoginPage() {
         data.email,
         data.password,
       );
-      console.log("Usuário logado:", user);
+
       if (user) {
         dispatch;
         ({
@@ -62,7 +64,7 @@ export default function LoginPage() {
       >
         <div className="flex justify-center mb-4">
           <Image
-            src="/logo.png"
+            src={Logo}
             alt="Logo Quiz SUD"
             width={180}
             height={180}

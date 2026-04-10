@@ -3,6 +3,8 @@ import Link from "next/link";
 
 import Image from "next/image";
 
+import Logo from "../../public/logo.png";
+
 import { useContext } from "react";
 import { ProviderContext } from "@/app/layout";
 
@@ -27,7 +29,7 @@ const Header = () => {
           "
         >
           <Image
-            src="/logo.png"
+            src={Logo}
             alt="logomarca de imagem"
             width={170}
             height={170}

@@ -12,6 +12,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { setUserData } from "@/libs/firebase/firebase.db";
 
+import Logo from "../../../../public/logo.png";
+
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [state, dispatch] = useContext(ProviderContext);
@@ -58,7 +60,7 @@ export default function RegisterPage() {
       >
         <div className="flex justify-center mb-4">
           <Image
-            src="/logo.png"
+            src={Logo}
             alt="Logo Quiz SUD"
             width={180}
             height={180}
