@@ -12,6 +12,7 @@ import { getAuthState } from "@/libs/firebase/firebase.auth";
 import { getUserData } from "@/libs/firebase/firebase.db";
 import { type } from "firebase/firestore/pipelines";
 import { mockQuestions } from "@/libs/mockData";
+import ModalAlert from "@/components/ModalAlert";
 
 const CATEGORIES = [
   "Livro de Mórmon",
@@ -28,43 +29,47 @@ export default function Home() {
   const [selecionados, setSelecionados] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   async function handleGenarateQuestion() {
     try {
       setLoading(true);
-      // const response = await fetch("/api/gemini", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ lib: state.questions.categorySelect }),
-      // });
+      const response = await fetch("/api/gemini", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lib: state.questions.categorySelect }),
+      });
 
-      // const data = await response.json().catch(() => ({}));
+      const data = await response.json().catch(() => ({}));
 
-      // if (!response.ok) {
-      //   const message =
-      //     data?.detail ||
-      //     data?.error ||
-      //     "Falha na requisição ao gerar perguntas";
-      //   throw new Error(message);
-      // }
+      if (!response.ok) {
+        const message =
+          data?.detail ||
+          data?.error ||
+          "Falha na requisição ao gerar perguntas";
+        throw new Error(message);
+      }
 
       dispatch({
         type: "ADD_LESSON",
-        payload: mockQuestions,
+        payload: data,
       });
 
       router.push("/lesson");
     } catch (error) {
       console.error("Erro ao gerar quiz:", error);
-      if (error.code === 503) {
-        alert(
-          "Serviço indisponível no mommento. Por favor, tente novamente mais tarde",
+      if (error.message.includes("503")) {
+        setModalMessage(
+          "O servidor está muito ocupado no momento. Por favor, aguarde alguns segundos e tente novamente.",
         );
-
-        return;
+        setShowModal(true);
+      } else if (error.message.includes("429")) {
+        setModalMessage(
+          "Infelizmente, você atingiu o limite de tokens para geração de perguntas. Aguarde até amanhã e tente novamente.",
+        );
+        setShowModal(true);
       }
-
-      alert(error.message || "Ocorreu um erro ao gerar o quiz");
     } finally {
       setLoading(false);
     }
@@ -223,6 +228,13 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      {showModal && (
+        <ModalAlert
+          onClose={() => setShowModal(false)}
+          message={modalMessage}
+        />
+      )}
     </div>
   );
 }
