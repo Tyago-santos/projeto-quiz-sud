@@ -21,9 +21,10 @@ export default function Lessons({ findIndex, setFindIndex }) {
     if (lessons.length === 0) {
       dispatch({
         type: "ADD_LESSON",
-        payload: mockQuestions,
+        payload: state.questions.lesson.length,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lessons.length, dispatch]);
 
   const handleAnswerClick = (answer, options) => {

@@ -47,23 +47,20 @@ export default function FinishResult() {
   console.log(correctAnswers);
 
   const handleRestart = () => {
-    const ok = confirm("Deseja realmente desistir");
-    if (ok) {
-      dispatch({
-        type: "ADD_LESSON",
-        payload: [],
-      });
+    dispatch({
+      type: "ADD_LESSON",
+      payload: [],
+    });
 
-      dispatch({
-        type: "ADD_QUESTION_SELECT",
-        payload: [],
-      });
+    dispatch({
+      type: "ADD_QUESTION_SELECT",
+      payload: [],
+    });
 
-      dispatch({
-        type: "ADD_COUNT_RESERT",
-      });
-      router.push("/");
-    }
+    dispatch({
+      type: "ADD_COUNT_RESERT",
+    });
+    router.push("/");
   };
 
   return (
