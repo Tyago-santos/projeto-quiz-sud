@@ -46,20 +46,36 @@ export async function POST(req) {
           {
             parts: [
               {
-                text: `Gere 10 perguntas estruturadas sobre o tema: ${topic}. Retorne em JSON com este formato:
+                text: `Atue como um gerador de quizzes especializado. Gere 20 perguntas de múltipla escolha.
+
+TEMA(S) PRINCIPAL (IS): ${topic}
+
+REGRA DE TEMA CONDICIONAL:
+- Se o tema fornecido acima for "outro" (ou vazio/indefinido), ignore o valor original e gere perguntas sobre: "Curiosidades e História da Igreja de Jesus Cristo dos Santos dos Últimos Dias".
+- Foque em temas como:  Pioneiros, Templos, Restauração e Profetas Modernos.
+
+REGRAS DE FORMATO (CRÍTICO):
+1. Retorne APENAS o JSON. Não escreva "Aqui está o seu quiz" ou qualquer outro texto.
+2. Formato exato (Array de Objetos):
 [
   {
-    id: 1,
-    question: "",
-    tema: "${topic}",
-    response: [
-      { options: "", isCorrect: true },
-      { options: "", isCorrect: false },
-      { options: "", isCorrect: false },
-      { options: "", isCorrect: false }
+    "id": 1,
+    "question": "Texto da pergunta",
+    "tema": "A Igreja de Jesus Cristo",
+    "response": [
+      { "options": "Opção 1", "isCorrect": false },
+      { "options": "Opção 2", "isCorrect": true },
+      { "options": "Opção 3", "isCorrect": false },
+      { "options": "Opção 4", "isCorrect": false }
     ]
   }
-]`,
+]
+
+REGRAS DE CONTEÚDO E ALEATORIEDADE:
+- ALEATORIEDADE TOTAL: A opção correta ("isCorrect": true) DEVE mudar de posição em cada pergunta (não deixe sempre na primeira ou na mesma posição).
+- Certifique-se de que cada pergunta tenha exatamente 4 opções e apenas UMA esteja correta.
+- O JSON deve ser perfeitamente válido para evitar erros de leitura no código.
+`,
               },
             ],
           },
