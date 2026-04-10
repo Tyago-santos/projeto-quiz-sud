@@ -20,7 +20,10 @@ export const questionReducer = (state = initialStateQuestion, action) => {
       return { ...state, categorySelect: [...newState] };
 
     case "ADD_LESSON":
-      return { ...state, lesson: [...action.payload] };
+      const novaLesson = Array.isArray(action.payload)
+        ? [...action.payload]
+        : [action.payload];
+      return { ...state, lesson: [...novaLesson] };
 
     case "ADD_COUNT_CORRECT":
       return {
