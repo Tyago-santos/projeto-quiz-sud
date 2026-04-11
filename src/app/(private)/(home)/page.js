@@ -134,10 +134,10 @@ export default function Home() {
         {/* Container principal */}
         <div className="w-full max-w-6xl flex flex-col lg:flex-col gap-6 items-center">
           {/* CARD DE CATEGORIAS */}
-          <div className="w-full lg:w-1/2 flex justify-center">
-            <div className="w-full max-w-2xl bg-white border-2 border-secondary/50 rounded-3xl shadow-xl flex flex-col max-h-[85vh] overflow-hidden">
+          <div className="w-full lg:w-1/2 flex  justify-center">
+            <div className="w-full max-w-2xl bg-white border-2 border-secondary/50 rounded-3xl shadow-xl flex flex-col  overflow-hidden">
               <div className="bg-secondary/50 p-5 shrink-0">
-                <h3 className="text-2xl font-bold text-center text-text">
+                <h3 className="md:text-2xl text-xl font-bold text-center text-text">
                   Escolha as Categorias
                 </h3>
               </div>
@@ -153,7 +153,7 @@ export default function Home() {
                         key={category}
                         onClick={() => handleCheckbox(category)}
                         className={`
-                      flex items-center justify-between p-3 rounded-xl cursor-pointer border-2 transition-all duration-200
+                      flex items-center justify-between p-3 rounded-xl cursor-pointer border-2 transition-all duration-200 
                       ${
                         isSelected
                           ? "border-accent bg-accent/5 shadow-sm"
@@ -162,7 +162,7 @@ export default function Home() {
                     `}
                       >
                         <span
-                          className={`font-semibold text-base ${
+                          className={`font-semibold text-base text-sm ${
                             isSelected ? "text-accent" : "text-text/80"
                           }`}
                         >
@@ -203,7 +203,7 @@ export default function Home() {
                     state.questions.categorySelect.length === 0 || loading
                   }
                   className={`
-                w-full py-3.5 rounded-xl font-bold text-lg shadow-lg transition-all duration-300 transform
+                w-full py-3.5 rounded-xl font-bold text-lg shadow-lg transition-all duration-300 transform text-sm
                 ${
                   state.questions.categorySelect.length > 0 && !loading
                     ? "bg-primary text-text hover:brightness-105 active:scale-95 hover:shadow-primary/40"

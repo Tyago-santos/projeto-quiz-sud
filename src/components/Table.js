@@ -43,7 +43,7 @@ export default function Ranking() {
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-text/70">
             Ranking por escrituras
           </p>
-          <h2 className="text-2xl font-bold text-text">
+          <h2 className="md:text-2xl  text-xl font-bold text-text">
             Top jogadores por categoria
           </h2>
         </div>
