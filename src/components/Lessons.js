@@ -118,7 +118,7 @@ export default function Lessons({ findIndex, setFindIndex }) {
 
         {/* Corpo do Card */}
         <div className="p-6 overflow-y-auto custom-scrollbar">
-          <h2 className="text-xl font-bold text-text mb-6 leading-relaxed">
+          <h2 className="md:text-2xl text-sm font-bold text-text mb-6 leading-relaxed">
             {currentQuestion.question}
           </h2>
 
@@ -143,7 +143,7 @@ export default function Lessons({ findIndex, setFindIndex }) {
                 >
                   <div
                     className={`
-                      w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg mr-4 shrink-0
+                      w-10 h-10 rounded-xl flex items-center justify-center font-bold md:text-lg text-[10px] shrink-0
                       ${
                         isSelected
                           ? "bg-accent text-white"
@@ -170,7 +170,7 @@ export default function Lessons({ findIndex, setFindIndex }) {
             <button
               onClick={handleQuitResponse}
               className="
-                  flex-1 py-3.5 rounded-xl font-bold text-lg shadow-lg
+                  flex-1 py-3.5 rounded-xl font-bold md:text-lg text-sm shadow-lg
                   bg-slate-200 text-text/60 hover:bg-slate-300
                   transition-all duration-300 transform hover:scale-[1.02] active:scale-95
                 "
@@ -182,7 +182,7 @@ export default function Lessons({ findIndex, setFindIndex }) {
               onClick={handleCheckResponse}
               disabled={!selectedAnswer}
               className={`
-                  flex-1 py-3.5 rounded-xl font-bold text-lg shadow-lg transition-all duration-300 transform
+                  flex-1 py-3.5 rounded-xl font-bold md:text-lg text-sm shadow-lg transition-all duration-300 transform
                   ${
                     selectedAnswer
                       ? "bg-primary text-text hover:brightness-105 active:scale-95 hover:shadow-primary/40"
@@ -199,7 +199,7 @@ export default function Lessons({ findIndex, setFindIndex }) {
       {showQuitModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
           <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl ring-1 ring-slate-200">
-            <h3 className="text-xl font-bold text-text mb-3">
+            <h3 className="md:text-lg text-[10px] font-bold text-text mb-3">
               Deseja desistir?
             </h3>
             <p className="text-sm text-text/70 mb-6">
@@ -209,13 +209,13 @@ export default function Lessons({ findIndex, setFindIndex }) {
             <div className="flex gap-3">
               <button
                 onClick={handleCancelQuit}
-                className="flex-1 py-3 rounded-xl border border-slate-200 bg-white text-text font-semibold hover:bg-slate-50 transition"
+                className="flex-1 py-3 rounded-xl border border-slate-200 bg-white text-text font-semibold hover:bg-slate-50 transition md:text-lg text-[10px]"
               >
                 Continuar jogando
               </button>
               <button
                 onClick={handleConfirmQuit}
-                className="flex-1 py-3 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition"
+                className="flex-1 py-3 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition md:text-lg text-[10px]"
               >
                 Ir para home
               </button>
