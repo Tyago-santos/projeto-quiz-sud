@@ -46,13 +46,13 @@ export async function POST(req) {
           {
             parts: [
               {
-                text: `Atue como um gerador de quizzes especializado. Gere 20 perguntas de múltipla escolha.
+                text: `Atue como um gerador de quizzes especializado. Gere 20 perguntas de múltipla escolha. Essa perguntas devem ser aleatórias e variadas, mas todas relacionadas ao seguinte TEMA(S) PRINCIPAL (IS): ${topic}.
 
-TEMA(S) PRINCIPAL (IS): ${topic}
 
 REGRA DE TEMA CONDICIONAL:
 - Se o tema fornecido acima for "outro" (ou vazio/indefinido), ignore o valor original e gere perguntas sobre: "Curiosidades e História da Igreja de Jesus Cristo dos Santos dos Últimos Dias".
 - Foque em temas como:  Pioneiros, Templos, Restauração e Profetas Modernos.
+- preserve o tema como "${topic}", não mude.
 
 REGRAS DE FORMATO (CRÍTICO):
 1. Retorne APENAS o JSON. Não escreva "Aqui está o seu quiz" ou qualquer outro texto.

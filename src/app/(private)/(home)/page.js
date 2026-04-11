@@ -10,7 +10,6 @@ import Header from "@/components/Header";
 import { ProviderContext } from "@/app/layout";
 import { getAuthState } from "@/libs/firebase/firebase.auth";
 import { getUserData } from "@/libs/firebase/firebase.db";
-import { type } from "firebase/firestore/pipelines";
 import { mockQuestions } from "@/libs/mockData";
 import ModalAlert from "@/components/ModalAlert";
 

@@ -9,29 +9,50 @@ export default function FinishResult() {
 
   const [state, dispatch] = useContext(ProviderContext);
 
-  const correctAnswersObj = state.questions.countCorrect;
-  const correctAnswers = Object.values(correctAnswersObj).reduce(
+  const wrongAnswers = state.questions.countError;
+  const totalQuestions = state?.questions?.lesson.length || 0;
+  const userName = state.user.name;
+  const userId = state.user.userId;
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const correctAnswersByCategory =
+    state &&
+    state.questions &&
+    typeof state.questions.countCorrect === "object" &&
+    state.questions.countCorrect !== null
+      ? state.questions.countCorrect
+      : {};
+
+  const correctAnswers = Object.values(correctAnswersByCategory).reduce(
     (a, b) => a + b,
     0,
   );
-  const wrongAnswers = state.questions.countError;
-  const totalQuestions = state?.questions?.lesson.length || 0;
-  const categories = state.questions.categorySelect;
-  const userName = state.user.name;
-  const userId = state.user.userId;
+
+  const percentCorrect =
+    totalQuestions > 0
+      ? ((correctAnswers / totalQuestions) * 100).toFixed(0)
+      : 0;
 
   useEffect(() => {
     const saveScores = async () => {
       console.log("Salvando scores:", {
         correctAnswers,
-        categories,
+        correctAnswersByCategory,
         userId,
         userName,
       });
-      if (Object.keys(correctAnswers).length > 0 && userId && userName) {
+      const hasScores =
+        correctAnswersByCategory &&
+        Object.keys(correctAnswersByCategory).length > 0;
+
+      if (hasScores && userId && userName) {
         try {
           // Salvar pontuação para cada categoria com score
-          for (const [tema, score] of Object.entries(correctAnswers)) {
+          for (const [tema, score] of Object.entries(correctAnswersByCategory)) {
+            if (!tema) {
+              console.warn("Tema vazio ignorado ao salvar score");
+              continue;
+            }
             console.log("Salvando para tema:", tema, "score:", score);
             await saveUserScore(userId, userName, tema, score);
           }
@@ -42,9 +63,7 @@ export default function FinishResult() {
     };
 
     saveScores();
-  }, [correctAnswers, userId, userName]);
-
-  console.log(correctAnswers);
+  }, [correctAnswersByCategory, userId, userName, correctAnswers]);
 
   const handleRestart = () => {
     dispatch({
@@ -114,14 +133,13 @@ export default function FinishResult() {
                 <div
                   className="bg-accent h-3 rounded-full transition-all duration-500"
                   style={{
-                    width: `${(correctAnswers / totalQuestions) * 100}%`,
+                    width: `${percentCorrect}%`,
                   }}
                 />
               </div>
 
               <p className="text-center mt-3 text-lg font-semibold text-text/80">
-                {((correctAnswers / totalQuestions) * 100).toFixed(0)}% de
-                aproveitamento
+                {percentCorrect}% de aproveitamento
               </p>
             </div>
           </div>

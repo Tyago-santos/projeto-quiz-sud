@@ -26,11 +26,18 @@ export const questionReducer = (state = initialStateQuestion, action) => {
       return { ...state, lesson: [...novaLesson] };
 
     case "ADD_COUNT_CORRECT":
+      // Ignora payload inválido
+      if (!action.payload) return state;
+      // Garante que countCorrect seja sempre um objeto (evita estado antigo numérico)
+      const safeCountCorrect =
+        state && typeof state.countCorrect === "object" && state.countCorrect !== null
+          ? state.countCorrect
+          : {};
       return {
         ...state,
         countCorrect: {
-          ...state.countCorrect,
-          [action.payload]: (state.countCorrect[action.payload] || 0) + 1,
+          ...safeCountCorrect,
+          [action.payload]: (safeCountCorrect[action.payload] || 0) + 1,
         },
       };
 
